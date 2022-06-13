@@ -50,7 +50,7 @@ def extract_cashback(filename):
         columns=['120,530']
     )
 
-    df = concat([table1[0].df, table2[0].df])
+    df = concat([table1[0].df, concat([table2[i].df for i in range(0, len(table2))])])
 
     for index, row in df.iterrows():
         try:
@@ -58,7 +58,7 @@ def extract_cashback(filename):
             text = row[1].replace("\n", " ")
             amount = -float(row[2].replace("'", ""))
 
-            if text == "YOUR PAYMENT – THANK YOU":
+            if text == "IHRE ZAHLUNG (LSV) – BESTEN DANK":
                 amount = -amount
 
             entries.append([date, amount, text])
